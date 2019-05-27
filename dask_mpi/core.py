@@ -54,7 +54,8 @@ def initialize(interface=None, nthreads=1, local_directory='', memory_limit='aut
     exec_telegraf(rank)
 
     if rank == 0:
-        scheduler = create_scheduler(loop, host=host, bokeh=bokeh, bokeh_port=bokeh_port, bokeh_prefix=bokeh_prefix)
+        scheduler = create_scheduler(loop, host=host, bokeh=bokeh, bokeh_port=bokeh_port, bokeh_prefix=bokeh_prefix,
+                                     scheduler_file='scheduler.json')
         addr = scheduler.address
     else:
         addr = None
@@ -71,7 +72,7 @@ def initialize(interface=None, nthreads=1, local_directory='', memory_limit='aut
     else:
         create_and_run_worker(loop, host=host, rank=rank, nanny=nanny, nthreads=nthreads,
                               local_directory=local_directory, memory_limit=memory_limit,
-                              bokeh=bokeh, bokeh_port=bokeh_worker_port)
+                              bokeh=bokeh, bokeh_port=bokeh_worker_port, scheduler_file='scheduler.json')
         sys.exit()
 
 
