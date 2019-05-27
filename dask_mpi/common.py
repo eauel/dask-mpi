@@ -65,6 +65,9 @@ def create_and_run_worker(loop, host=None, rank=0, scheduler_file=None, nanny=Fa
         kwargs = {}
         W = Worker
 
+    kwargs['memory_target_fraction'] = False
+    kwargs['memory_spill_fraction '] = False
+
     W = Nanny if nanny else Worker
     worker = W(scheduler_file=scheduler_file,
                loop=loop,
