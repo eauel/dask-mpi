@@ -9,6 +9,7 @@ from tornado import gen
 from tornado.ioloop import IOLoop
 
 from .common import get_host_from_interface, create_scheduler, run_scheduler, create_and_run_worker
+from .telegraf import exec_telegraf
 
 
 def initialize(interface=None, nthreads=1, local_directory='', memory_limit='auto', nanny=False,
@@ -48,6 +49,9 @@ def initialize(interface=None, nthreads=1, local_directory='', memory_limit='aut
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     loop = IOLoop()
+
+    # Begin running telegraf process
+    exec_telegraf(rank)
 
     if rank == 0:
         scheduler = create_scheduler(loop, host=host, bokeh=bokeh, bokeh_port=bokeh_port, bokeh_prefix=bokeh_prefix)
